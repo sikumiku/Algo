@@ -108,41 +108,41 @@ public class IntSorting {
     *
     * @param a
     *           array to be sorted
+    *           Kasutatud kirjandus: http://quiz.geeksforgeeks.org/binary-insertion-sort/
     */
-   public static int binarySearch(int a[], int otsitav, int madal, int k6rge) {
+   private static int binarySearch(int[] a, int madal, int k6rge, int otsitav) {
 
-      if (k6rge <= madal)
-         return(otsitav > a[madal])? (madal + 1): madal;
-
-      int kesk = (madal + k6rge)/2;
-
-      if (otsitav == a[kesk])
-         return kesk+1;
-
-      if (otsitav > a[kesk]) {
-         return binarySearch(a, otsitav, kesk + 1, k6rge);
-      }
-
-
-      return binarySearch(a, otsitav, madal, kesk - 1);
+      int kesk;
+      //Juhul kui otsitav ala sisaldab vaid 1 elementi
+      if (madal == k6rge)
+         return madal;
+      kesk = madal + ((k6rge - madal) / 2);
+      //Kontrollime, kas number, millele kohta otsime on otsitava ala keskpunktis asuvast numbrist suurem number
+      // kui jah, siis madalamaiks puntkiks on keskpunktist j2rgnev punkt
+      if (otsitav > a[kesk])
+         return binarySearch (a, kesk + 1, k6rge, otsitav);
+      //kui ei, siis kontrollime, kas kas number, millele kohta otsime on otsitava ala keskpunktis asuvast numbrist
+      //väiksem number. Kui jah, siis on k2rgpunktiks keskpunkt
+      else if (otsitav < a[kesk])
+         return binarySearch (a, madal, kesk, otsitav);
+      return kesk;
 
    }
 
    public static void binaryInsertionSort(int[] a) {
 
-      int i, loc, j, current;
-
+      int loc, i;
+      //käime läbi ette antud array
       for (i = 1; i < a.length; i++) {
-         j = i - 1;
-         current = a[i];
-         loc = binarySearch(a, current, 0, j);
-
-         //Liiguta elemente yhe v6rra, et ruumi teha
-         while (j >= loc) {
-            a[j + 1] = a[j];
-            j--;
+         int current = a[i]; //väärtus, millele otsime asukohta
+         //otsime asukoha, kuhu tahame pista väärtuse alast, mis asub väärtusest vasakul
+         loc = binarySearch (a, 0, i, a[i]);
+         //kui selline asukoht leidub vasakut kätt, siis liigutame asukoha ja väärtuse vahele jääva piirkonda ühe võrra paremale.
+         if(loc < i){
+            System.arraycopy(a, loc, a, loc + 1, i - loc);
+            //pistame asukoha asemele väärtuse
+            a[loc] = current;
          }
-         a[j + 1] = current;
       }
    }
 
