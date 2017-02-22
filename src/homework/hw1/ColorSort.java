@@ -1,4 +1,4 @@
-package homework.hw1;//Testing histogram example
+package homework.hw1;
 
 public class ColorSort {
 
