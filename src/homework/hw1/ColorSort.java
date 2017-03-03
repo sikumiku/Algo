@@ -20,20 +20,20 @@ public class ColorSort {
 
         for (int i = 0; i < balls.length; i++) {
             if (balls[i] == Color.red) {
-                sortedBalls[j2rg] = Color.red;
+                sortedBalls[j2rg] = balls[i];
                 j2rg ++;
             }
         }
         for (int i = 0; i < balls.length; i++) {
             if (balls[i] == Color.green) {
-                sortedBalls[j2rg] = Color.green;
+                sortedBalls[j2rg] = balls[i];
                 j2rg ++;
             }
         }
 
         for (int i = 0; i < balls.length; i++) {
             if (balls[i] == Color.blue) {
-                sortedBalls[j2rg] = Color.blue;
+                sortedBalls[j2rg] = balls[i];
                 j2rg ++;
             }
         }
