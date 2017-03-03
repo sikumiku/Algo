@@ -1,5 +1,7 @@
 package homework.hw1;
 
+//Viited: https://www.tutorialspoint.com/java/lang/system_arraycopy.htm, ylej22nud tehtud oma loogikaga
+
 public class ColorSort {
 
    public enum Color {
@@ -37,8 +39,6 @@ public class ColorSort {
                 j2rg ++;
             }
         }
-
-        // sorting magic happens here
 
         System.arraycopy(sortedBalls, 0, balls, 0, balls.length);
     }

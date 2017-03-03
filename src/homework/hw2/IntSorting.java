@@ -108,7 +108,7 @@ public class IntSorting {
     *
     * @param a
     *           array to be sorted
-    *           Kasutatud kirjandus: http://quiz.geeksforgeeks.org/binary-insertion-sort/
+    *           Kasutatud kirjandus: http://quiz.geeksforgeeks.org/binary-insertion-sort/ ja https://www.tutorialspoint.com/java/lang/system_arraycopy.htm
     */
    private static int binarySearch(int a[], int otsitav, int madal, int k6rge) {
       //‰‰rmuslik juhtum
