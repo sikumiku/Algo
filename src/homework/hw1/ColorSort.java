@@ -8,8 +8,7 @@ public class ColorSort {
        red, green, blue;
    }
 
-   public static Color[] balls = null;
-   
+
    public static void main (String[] param) {
       // for debugging
    }
@@ -42,8 +41,6 @@ public class ColorSort {
 
         System.arraycopy(sortedBalls, 0, balls, 0, balls.length);
     }
-
-
 
 }
 
