@@ -116,7 +116,7 @@ public class IntSorting {
          return(otsitav > a[madal])? (madal + 1): madal;
       //keskpunkt
       int kesk = (madal + k6rge)/2;
-      //juhul kui otsitav on juba keskpunktis, siis tagasta asukohaks keskkohast järgnev koht
+      //juhul kui otsitav on juba keskpunktis, siis suurenda keskmist yhe v6rra
       if (otsitav == a[kesk])
          return kesk+1;
       //juhul kui otsitav on suurem keskpunktist, siis meetod tagastab madalpunktiks keskpunktist järgneva koha
@@ -141,7 +141,6 @@ public class IntSorting {
             //sisestame tekkinud auku meie arvu, millele kohta otsime
             a[loc] = current;
          }
-
       }
    }
 
