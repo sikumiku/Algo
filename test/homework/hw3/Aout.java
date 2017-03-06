@@ -1,6 +1,6 @@
 package homework.hw3;
 /** Helper methods.
- *   Arrays converted to array expressions (toString(...)) 
+ *   Arrays converted to array expressions (toString(...))
  *   and prettyprinting (toPrettyString(...)).
  * @author Jaanus
  */
@@ -20,12 +20,12 @@ public class Aout {
       for (int i=0; i < m.length; i++) {
          if (i > 0) sb.append (", ");
          if (m[i] == null)
-            sb.append ("null"); 
+            sb.append ("null");
          else {
             sb.append ("{");
             for (int j=0; j < m[i].length; j++) {
                if (j > 0) sb.append (", ");
-               sb.append (String.valueOf (m[i][j])); 
+               sb.append (String.valueOf (m[i][j]));
             } // for j
             sb.append ("}");
          }
@@ -94,7 +94,7 @@ public class Aout {
 
    /** Conversion for String . */
    public static String toString (String s) {
-      if (s == null) 
+      if (s == null)
          return "null";
       StringBuffer tmp = new StringBuffer();
       for (int k=0; k < s.length(); k++) {
@@ -117,12 +117,12 @@ public class Aout {
 
    /** Conversion for String[] . */
    public static String toString (String[] m) {
-      if (m == null) 
+      if (m == null)
          return "(String[])null";
       StringBuffer sb = new StringBuffer();
       sb.append ("new String[]{");
       for (int i=0; i < m.length; i++) {
-         if (i > 0) 
+         if (i > 0)
             sb.append (", ");
          sb.append (toString (m[i]));
       } // for i

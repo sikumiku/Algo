@@ -10,7 +10,7 @@ public class DoubleStackTest {
    public static double delta = 0.000000001;
 
    @Test (timeout=1000)
-   public void testNewStack() { 
+   public void testNewStack() {
       DoubleStack m = new DoubleStack();
       assertTrue ("new stack must be empty;", m.stEmpty());
       m.push (1.);
@@ -59,7 +59,7 @@ public class DoubleStackTest {
       tt = m.pop();
       assertTrue ("51. / 3. must be 17.; ", tt==17.);
       assertTrue ("push push op pop must not grow the stack; ", m.stEmpty());
-   } 
+   }
 
    @Test (timeout=1000)
    public void testTos() {
@@ -89,10 +89,10 @@ public class DoubleStackTest {
       assertFalse ("1. 0. and 1. 3. must not be equal;", m1.equals(m2));
       m1.pop();
       m2.pop();
-      assertTrue ("1. in stacks with different history, stacks must be equal;", 
+      assertTrue ("1. in stacks with different history, stacks must be equal;",
          m1.equals(m2));
       m1.pop();
-      assertFalse ("first empty, second contains 1., must not be equal;", 
+      assertFalse ("first empty, second contains 1., must not be equal;",
          m1.equals(m2));
    }
 
@@ -122,6 +122,7 @@ public class DoubleStackTest {
       assertEquals ("clone must be equal to original;", m2, m1);
       m1.pop();
       m1.push (6.);
+       System.out.println(m1);
       assertFalse ("clone must be independent;", m1.equals(m2));
    }
 
@@ -135,9 +136,9 @@ public class DoubleStackTest {
       m.push (2.73);
       String s2 = m.toString().substring (0, 8);
       assertEquals (
- "top must be the last element; toString from bottom must start with -8.5 7.14 ", 
+ "top must be the last element; toString from bottom must start with -8.5 7.14 ",
          s1, s2);
-   } 
+   }
 
    @Test (expected=RuntimeException.class)
    public void testTosUnderflow() {
@@ -210,13 +211,13 @@ public class DoubleStackTest {
    @Test (timeout=1000)
    public void testInterpretTokenizer() {
       String s = "1.  2.    +";
-      assertEquals ("expression: " + Aout.toString (s), 3., 
+      assertEquals ("expression: " + Aout.toString (s), 3.,
          DoubleStack.interpret (s), delta);
       s = "   \t \t356.  \t \t";
       assertEquals ("expression: " + Aout.toString (s), 356.,
          DoubleStack.interpret (s), delta);
       s = "\t2. \t5. +   \t";
-      assertEquals ("expression: " + Aout.toString (s), 7., 
+      assertEquals ("expression: " + Aout.toString (s), 7.,
          DoubleStack.interpret (s), delta);
    }
 }
