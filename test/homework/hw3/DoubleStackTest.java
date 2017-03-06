@@ -116,7 +116,7 @@ public class DoubleStackTest {
       m1.push (4.);
       DoubleStack m2 = null;
       try {
-         m2 = (DoubleStack)m1.clone();
+         m2 = m1.clone();
       } catch (CloneNotSupportedException e) {};
       assertNotSame ("clone must differ from original;", m2, m1);
       assertEquals ("clone must be equal to original;", m2, m1);
@@ -132,6 +132,7 @@ public class DoubleStackTest {
       assertNotNull ("empty stack must be ok;", m.toString());
       m.push (-8.5);
       m.push (7.14);
+       System.out.println(m);
       String s1 = m.toString().substring (0, 8);
       m.push (2.73);
       String s2 = m.toString().substring (0, 8);

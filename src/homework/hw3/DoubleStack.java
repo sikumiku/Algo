@@ -1,7 +1,6 @@
 package homework.hw3;
 
 import java.util.LinkedList;
-import java.util.ListIterator;
 public class DoubleStack {
 
 
@@ -144,11 +143,20 @@ public class DoubleStack {
 
    @Override
    public boolean equals (Object o) {
-      if (((DoubleStack) o).sp != sp)
-          return false;
-       for (int i = 0; i <= sp; i++)
-           if (((DoubleStack) o).stack.get(i) != stack.get(i))
+       if (!(o instanceof DoubleStack)) return false;
+       DoubleStack ds = (DoubleStack)o;
+       if (sp != ds.sp) return false;
+
+       Node n1 = Head;
+       Node n2 = ds.Head;
+       while (n1 != null) {
+           if (n1.Value != n2.Value) {
                return false;
+           }
+           n1 = n1.Next;
+           n2 = n2.Next;
+       }
+
        return true;
    }
 
@@ -203,7 +211,7 @@ public class DoubleStack {
                }
            }
        }
-       if (s.Count != 1)
+       if (s.stack.size() != 1)
            throw new RuntimeException("Invalid expression: "+pol);
        return s.pop();
    }
