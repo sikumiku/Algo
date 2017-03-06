@@ -1,4 +1,4 @@
-
+package homework.hw3;
 /** Helper methods.
  *   Arrays converted to array expressions (toString(...)) 
  *   and prettyprinting (toPrettyString(...)).
@@ -88,7 +88,7 @@ public class Aout {
    } // toString int
 
    /** Conversion for double . */
-   public static String toString (double d) {
+  public static String toString (double d) {
       return String.valueOf (d);
    } // toString double
 
@@ -136,7 +136,7 @@ public class Aout {
     * @return d as string
     */
    public static String fString (double d, int len) {
-      if (len<1) 
+      if (len<1)
          return "";
       // pad on ruum punkti ja v6imaliku miinusm2rgi jaoks
       int pad = 1 + ((d<0)?1:0);
@@ -144,7 +144,7 @@ public class Aout {
       int loga = (int)Math.max (0., Math.log10 (Math.abs (d))) + 1;
       // kk on punkti j2rel olevate kohtade arv
       int kk = (int)Math.max (len-pad-loga, 0);
-      String fs = "%" + String.valueOf (len) + "." + 
+      String fs = "%" + String.valueOf (len) + "." +
          String.valueOf (kk) + "f";
       String res = "";
       try {
@@ -155,7 +155,7 @@ public class Aout {
       return res;
    } // fString
 
-   /** Prettyprint for double[][] . 
+   /** Prettyprint for double[][] .
     * @param m array to print
     * @param fs format string for element
     * @return m array as multiline string
@@ -257,5 +257,5 @@ public class Aout {
       return sb.toString();
    } // toPrettyString String[]
 
-} // Aout
+}  //Aout
 

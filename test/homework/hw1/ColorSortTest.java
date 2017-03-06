@@ -2,7 +2,6 @@ package homework.hw1;
 
 import static org.junit.Assert.*;
 
-import homework.hw1.ColorSort;
 import org.junit.Test;
 
 public class ColorSortTest {
