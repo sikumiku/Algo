@@ -1,6 +1,7 @@
 package homework.hw3;
 
-/*Kasutatud kirjandus:
+/*Github: https://github.com/sikumiku/Algo
+Kasutatud kirjandus:
 https://docs.oracle.com/javase/7/docs/api/javax/xml/soap/Node.html
 http://stackoverflow.com/questions/28844026/writing-an-equals-method-for-linked-list-object
 http://beginnersbook.com/2013/12/linkedlist-in-java-with-example/
@@ -72,19 +73,19 @@ public class DoubleStack {
 
     private class Node
     {
-        public double Value;
-        public Node   Prev;
-        public Node   Next;
-        public Node(double value, Node prev, Node next)
+        private double value;
+        private Node   prev;
+        private Node   next;
+        public Node(double ivalue, Node iprev, Node inext)
         {
-            Value = value;
-            Prev  = prev;
-            Next  = next;
+            value = ivalue;
+            prev  = iprev;
+            next  = inext;
         }
     }
 
-    private Node Head  = null;
-    private Node Tail  = null;
+    private Node head  = null;
+    private Node tail  = null;
 
 
     private LinkedList<Double> stack;
@@ -121,23 +122,17 @@ public class DoubleStack {
         return stack.size() <= 0;
     }
 
-    //Stack is only overflown if last index equals or succeeds stack's size
-    public boolean stackOverflow() {
-        return (stack.lastIndexOf(Tail) >= stack.size());
-    }
 
     //Push element and assign Tail position
     public void push(double a) {
-        if (stackOverflow())
-            throw new IndexOutOfBoundsException("Stack Overflow");
 
         stack.push(a);
 
         if (stack.size() == 1) {
-            Head = Tail = new Node(a, null, null);
+            head = tail = new Node(a, null, null);
 
         } else {
-            Tail = Tail.Next = new Node(a, Tail, null);
+            tail = tail.next = new Node(a, tail, null);
         }
 
 
@@ -152,9 +147,9 @@ public class DoubleStack {
         Double tmp2 = stack.peek();
 
         if (stack.size() == 0) {
-            Head = Tail = null;
+            head = tail = null;
         } else {
-            Tail = Tail.Prev = new Node (tmp2, Tail.Prev.Prev, Tail);
+            tail = tail.prev = new Node (tmp2, tail.prev.prev, tail);
         }
 
         return tmp;
@@ -179,7 +174,8 @@ public class DoubleStack {
                 }
                 System.out.println(stack);
             }
-            else System.out.println("Not enough members to perform calculation.");
+            else throw new RuntimeException(String.format(
+                    "Not enough members to perform calculation."));
         } else {
             throw new RuntimeException(String.format(
                     "Element '%s' is not an Operator.", s));
@@ -217,8 +213,8 @@ public class DoubleStack {
     public String toString() {
         StringBuffer sb = new StringBuffer();
 
-        for (Node n = Head; n != null; n = n.Next) {
-            sb.append(n.Value);
+        for (Node n = head; n != null; n = n.next) {
+            sb.append(n.value);
         }
         return sb.toString();
     }
