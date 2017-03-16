@@ -9,6 +9,7 @@ http://docs.oracle.com/javase/7/docs/api/java/lang/StringBuilder.html
 http://stackoverflow.com/questions/15625629/regex-expressions-in-java-s-vs-s
 https://www.cs.cmu.edu/~adamchik/15-121/lectures/Linked%20Lists/linked%20lists.html
 http://docs.oracle.com/javase/7/docs/api/java/util/LinkedList.html
+http://www.java2s.com/Book/Java/0080__Collections/Get_the_index_of_an_element.htm
  */
 
 import java.util.LinkedList;
@@ -69,24 +70,39 @@ public class DoubleStack {
 
     }
 
+    private class Node
+    {
+        public double Value;
+        public Node   Prev;
+        public Node   Next;
+        public Node(double value, Node prev, Node next)
+        {
+            Value = value;
+            Prev  = prev;
+            Next  = next;
+        }
+    }
 
-    private int Count = 0;
+    private Node Head  = null;
+    private Node Tail  = null;
+
+
     private LinkedList<Double> stack;
-    //Marker sp is for tracking stack content
-    private int sp;
+
 
     DoubleStack() {
         stack = new LinkedList<>();
-        //LinkedList marker is marked at the end of the stack to track last element position
-        sp = stack.size() - 1;
     }
 
     @Override
     public DoubleStack clone() throws CloneNotSupportedException {
         DoubleStack stackclone = new DoubleStack();
+
+        double m = stack.getLast();
+
         try {
             //iterate from back to front in order to push to new Stack
-            for (int i = sp; i >= 0; i--) {
+            for (int i = stack.indexOf(m); i >= 0; i--) {
                 stackclone.push(stack.get(i));
             }
         } catch (Exception e) {
@@ -97,48 +113,78 @@ public class DoubleStack {
     }
 
     public boolean stEmpty() {
-        return Count == 0;
+        return stack.size() == 0;
     }
 
-    //Stack is only empty is tracker is smaller than the supposed last element position
+
     public boolean stackEmpty() {
-        return (sp < stack.size() - 1);
+        return stack.size() <= 0;
     }
 
-    //Stack is only overflown if tracker equals or succeeds stack's size (should always be 1 behind)
+    //Stack is only overflown if last index equals or succeeds stack's size
     public boolean stackOverflow() {
-        return (sp >= stack.size());
+        return (stack.lastIndexOf(Tail) >= stack.size());
     }
 
-    //Push element and increase tracker
+    //Push element and assign Tail position
     public void push(double a) {
         if (stackOverflow())
             throw new IndexOutOfBoundsException("Stack Overflow");
-        sp += 1;
+
         stack.push(a);
+
+        if (stack.size() == 1) {
+            Head = Tail = new Node(a, null, null);
+
+        } else {
+            Tail = Tail.Next = new Node(a, Tail, null);
+        }
+
+
     }
 
     //Pop element and decrease tracker
     public double pop() {
         if (stackEmpty())
             throw new IndexOutOfBoundsException("Stack Underflow");
-        sp -= 1;
+
         Double tmp = stack.pop();
+        Double tmp2 = stack.peek();
+
+        if (stack.size() == 0) {
+            Head = Tail = null;
+        } else {
+            Tail = Tail.Prev = new Node (tmp2, Tail.Prev.Prev, Tail);
+        }
+
         return tmp;
-    } // pop
+    }
 
     //In case of one of four different operands remove 2 elements and use operand on them
     public void op(String s) {
-        double op2 = pop();
-        double op1 = pop();
-        if (s.equals("+"))
-            push(op1 + op2);
-        if (s.equals("-"))
-            push(op1 - op2);
-        if (s.equals("*"))
-            push(op1 * op2);
-        if (s.equals("/"))
-            push(op1 / op2);
+        if (isOperator(s)) {
+            if (stack.size() >= 1) {
+                double op2 = pop();
+                double op1 = pop();
+
+                switch (s) {
+                    case "+": push(op1 + op2);
+                        break;
+                    case "-": push(op1 - op2);
+                        break;
+                    case "*": push(op1 * op2);
+                        break;
+                    case "/": push(op1 / op2);
+                        break;
+                }
+                System.out.println(stack);
+            }
+            else System.out.println("Not enough members to perform calculation.");
+        } else {
+            throw new RuntimeException(String.format(
+                    "Element '%s' is not an Operator.", s));
+        }
+
     }
 
     //Only check and return element at Head of stack
@@ -153,7 +199,6 @@ public class DoubleStack {
     public boolean equals(Object o) {
         if (!(o instanceof DoubleStack)) return false;
         DoubleStack ds = (DoubleStack) o;
-        if (sp != ds.sp) return false;
         int i = 0;
         for (double a : stack) {
             if (a != ds.stack.get(i)) {
@@ -161,15 +206,19 @@ public class DoubleStack {
             }
             i++;
         }
+        if (i != ds.stack.size()) return false; //Also compare the sizes of both stacks
         return true;
     }
+
+
 
     @Override
     //Iterate through the Stack and attach each element to StringBuffer
     public String toString() {
         StringBuffer sb = new StringBuffer();
-        for (int i = sp; i >= 0; i--) {
-            sb.append(stack.get(i));
+
+        for (Node n = Head; n != null; n = n.Next) {
+            sb.append(n.Value);
         }
         return sb.toString();
     }
@@ -181,7 +230,7 @@ public class DoubleStack {
         return c == '+' || c == '-' || c == '*' || c == '/';
     }
 
-    public static double interpret(String pol) {
+    public static double interpret(String pol) { //peegeldada string pol'i veateadetes
         if (pol.isEmpty()) throw new RuntimeException("No input string.");
         DoubleStack DSinterpret = new DoubleStack();
         //create an array to handle String elements, \\s+ helps to separate elements by detecting whitespace characters
@@ -195,7 +244,7 @@ public class DoubleStack {
                     DSinterpret.op(e);
                 } catch (IndexOutOfBoundsException ex) {
                     throw new RuntimeException(String.format(
-                            "Token '%s' at is invalid.", e));
+                            "Token '%s' in string '%p' is invalid.", e, pol));
                 }
             } else {
                 //in case not an operator, convert String to double and push to stack
@@ -203,7 +252,7 @@ public class DoubleStack {
                     DSinterpret.push(Double.parseDouble(e));
                 } catch (NumberFormatException ex) {
                     throw new RuntimeException(String.format(
-                            "Unable to push element '%s' if not a number.", e));
+                            "Unable to push element '%s' in string '%p' if not a number.", e, pol));
                 }
             }
         }
