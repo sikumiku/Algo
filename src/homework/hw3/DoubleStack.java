@@ -1,6 +1,7 @@
 package homework.hw3;
 
-/*Github: https://github.com/sikumiku/Algo
+/*Tunni jooksul parandatud 17.03.2017
+Github: https://github.com/sikumiku/Algo
 Kasutatud kirjandus:
 https://docs.oracle.com/javase/7/docs/api/javax/xml/soap/Node.html
 http://stackoverflow.com/questions/28844026/writing-an-equals-method-for-linked-list-object
@@ -66,8 +67,7 @@ public class DoubleStack {
             }
             prog = sb.toString();
         }
-        System.out.println(prog + "\n "
-                + String.valueOf(interpret(prog)));
+        System.out.println(interpret("1 4 / -"));
 
     }
 
@@ -97,20 +97,14 @@ public class DoubleStack {
 
     @Override
     public DoubleStack clone() throws CloneNotSupportedException {
+
         DoubleStack stackclone = new DoubleStack();
 
-        double m = stack.getLast();
-
-        try {
-            //iterate from back to front in order to push to new Stack
-            for (int i = stack.indexOf(m); i >= 0; i--) {
-                stackclone.push(stack.get(i));
-            }
-        } catch (Exception e) {
-            throw new CloneNotSupportedException("Cloning unsuccessful.");
+        for (int i = stack.size() - 1; i >= 0; i--) {
+            stackclone.push(stack.get(i));
         }
-        return stackclone;
 
+        return stackclone;
     }
 
     public boolean stEmpty() {
@@ -240,7 +234,7 @@ public class DoubleStack {
                     DSinterpret.op(e);
                 } catch (IndexOutOfBoundsException ex) {
                     throw new RuntimeException(String.format(
-                            "Token '%s' in string '%p' is invalid.", e, pol));
+                            "Token '%s' in string '%s' is invalid.", e, pol));
                 }
             } else {
                 //in case not an operator, convert String to double and push to stack
@@ -248,13 +242,13 @@ public class DoubleStack {
                     DSinterpret.push(Double.parseDouble(e));
                 } catch (NumberFormatException ex) {
                     throw new RuntimeException(String.format(
-                            "Unable to push element '%s' in string '%p' if not a number.", e, pol));
+                            "Unable to push element '%s' in string '%s' if not a number.", e, pol));
                 }
             }
         }
         //Check if only one element is remaining
         if (DSinterpret.stack.size() != 1)
-            throw new RuntimeException("Invalid expression: " + pol);
+            throw new RuntimeException("Invalid expression, unable to calculate final result: " + pol);
         //Return result from stack.
         return DSinterpret.pop();
     }
