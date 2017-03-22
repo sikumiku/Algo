@@ -40,8 +40,6 @@ public class Lfraction implements Comparable<Lfraction> {
 
    }
 
-
-
     private long numerator;
    private long denominator;
 
@@ -55,8 +53,9 @@ public class Lfraction implements Comparable<Lfraction> {
       denominator = b;
 
       if (denominator != 0) {
-         if (numerator < 0) {
+         if (denominator < 0) {
             numerator*= -1;
+            denominator*= -1;
          }
       } else throw new RuntimeException("Denumerator cannot be zero!");
 
@@ -135,9 +134,10 @@ public class Lfraction implements Comparable<Lfraction> {
     */
    public Lfraction plus (Lfraction m) {
 
-      long yhinenimetaja = denominator *m.denominator;
+
       long yhinetegur = getGCD(denominator, m.denominator);
-      long yhinelugeja = (numerator*(denominator /yhinetegur))+(m.numerator*(m.denominator /yhinetegur));
+      long yhinenimetaja = (denominator *m.denominator)/yhinetegur;
+      long yhinelugeja = (numerator*(yhinenimetaja /denominator))+(m.numerator*(yhinenimetaja /m.denominator));
 
       Lfraction plusLF = new Lfraction(yhinelugeja, yhinenimetaja);
       plusLF.cancelOut();
@@ -174,7 +174,7 @@ public class Lfraction implements Comparable<Lfraction> {
     * @return opposite of this fraction: -this
     */
    public Lfraction opposite() {
-      long oppositenumerator = numerator;
+      long oppositenumerator = numerator * -1;
 
       Lfraction oppositeLF = new Lfraction(oppositenumerator, denominator);
 
@@ -186,9 +186,10 @@ public class Lfraction implements Comparable<Lfraction> {
     * @return this-m
     */
    public Lfraction minus (Lfraction m) {
-       long yhinenimetaja = denominator *m.denominator;
+
        long yhinetegur = getGCD(denominator, m.denominator);
-       long yhinelugeja = (numerator*(denominator /yhinetegur))-(m.numerator*(m.denominator /yhinetegur));
+       long yhinenimetaja = (denominator *m.denominator)/yhinetegur;
+       long yhinelugeja = (numerator*(yhinenimetaja /denominator))-(m.numerator*(yhinenimetaja /m.denominator));
 
        Lfraction minusLF = new Lfraction(yhinelugeja, yhinenimetaja);
        minusLF.cancelOut();
@@ -256,9 +257,11 @@ public class Lfraction implements Comparable<Lfraction> {
     */
    public long integerPart() {
 
-      long c = numerator% denominator;
+      long a = numerator% denominator;
 
-      return c;
+      long b = (numerator - a )/ denominator;
+
+      return b;
    }
 
    /** Extract fraction part of the (improper) fraction
@@ -267,7 +270,11 @@ public class Lfraction implements Comparable<Lfraction> {
     */
    public Lfraction fractionPart() {
 
-        return new Lfraction(numerator, denominator - integerPart()*numerator);
+       long i = this.integerPart();
+
+       Lfraction fractionpartLF = new Lfraction(numerator - i*denominator, denominator);
+
+        return fractionpartLF;
    }
 
    /** Approximate value of the fraction.
