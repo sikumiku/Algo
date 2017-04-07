@@ -132,7 +132,7 @@ public class Tnode {
         System.out.println("RPN:" + rpn3);
         Tnode res3 = buildFromRPN(rpn3);
         System.out.println("Tree: " + res3);
-        String rpn4 = "99";
+        String rpn4 = " ";
         System.out.println("RPN:" + rpn4);
         Tnode res4 = buildFromRPN(rpn4);
         System.out.println("Tree: " + res4);

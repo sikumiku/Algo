@@ -41,8 +41,7 @@ public class Lfraction implements Comparable<Lfraction> {
 
         Lfraction converted = toLfraction(1.45, 2);
         System.out.println(converted);
-        System.out.println(valueOf("5/55"));
-
+        System.out.println(valueOf("m/n"));
     }
 
     private long numerator;
@@ -225,7 +224,6 @@ public class Lfraction implements Comparable<Lfraction> {
         minusLF.cancelOut();
 
         return minusLF;
-
     }
 
     /**
@@ -246,7 +244,6 @@ public class Lfraction implements Comparable<Lfraction> {
             divideLF.cancelOut();
             return divideLF;
         } else throw new ArithmeticException("Cannot divide by zero!");
-
     }
 
     /**
@@ -351,16 +348,19 @@ public class Lfraction implements Comparable<Lfraction> {
      */
     public static Lfraction valueOf(String s) {
 
-        if (s == null) {
-            throw new RuntimeException(String.format("String '%s' is invalid", s));
+        if (s == "" || s == null) {
+            throw new RuntimeException(String.format("String is empty."));
         }
 
         String[] fractionelements = s.split("/");
 
         if (fractionelements.length != 2) {
-            throw new RuntimeException(String.format("Please follow the format numerator/denominator, current string '%s' translates to invalid fraction '%s'.", s, fractionelements));
+            throw new RuntimeException(String.format("Please follow the format numerator/denominator, current string '%s' translates to invalid fraction.", s));
         }
-        if (fractionelements[0].matches("[^0-9]")) {
+
+        if (fractionelements[0].matches("[^0-9]") && (fractionelements[1].matches("[^0-9]"))) {
+            throw new RuntimeException(String.format("Numerator '%s' and denominator '%s' as part of string '%s' are not in valid number format.", fractionelements[0], fractionelements[1], s));
+        } else if (fractionelements[0].matches("[^0-9]")) {
             throw new RuntimeException(String.format("Numerator '%s' as part of string '%s' is not in valid number format.", fractionelements[0], s));
         } else if (fractionelements[1].matches("[^0-9]")) {
             throw new RuntimeException(String.format("Denominator '%s' as part of string '%s' is not in valid number format.", fractionelements[1], s));
