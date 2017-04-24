@@ -2,6 +2,8 @@ package homework.hw4;
 
 import java.util.*;
 
+import static java.lang.Long.parseLong;
+
 /**
  * This class represents fractions of form n/d where n and d are long integer
  * numbers. Basic operations and arithmetics for fractions are provided.
@@ -41,7 +43,7 @@ public class Lfraction implements Comparable<Lfraction> {
 
         Lfraction converted = toLfraction(1.45, 2);
         System.out.println(converted);
-        System.out.println(valueOf("m/n"));
+        System.out.println(valueOf("5/6/7"));
     }
 
     private long numerator;
@@ -339,6 +341,21 @@ public class Lfraction implements Comparable<Lfraction> {
         return new Lfraction(Math.round((double) d * f), d);
     }
 
+    public static boolean isNumeric(String str)
+    {
+        try
+        {
+            double d = Double.parseDouble(str);
+        }
+        catch(NumberFormatException nfe)
+        {
+            return false;
+        }
+        return true;
+    }
+
+
+
     /**
      * Conversion from string to the fraction. Accepts strings of form
      * that is defined by the toString method.
@@ -348,25 +365,33 @@ public class Lfraction implements Comparable<Lfraction> {
      */
     public static Lfraction valueOf(String s) {
 
-        if (s == "" || s == null) {
+        if (s.trim().length() == 0 || s == null) {
             throw new RuntimeException(String.format("String is empty."));
         }
 
         String[] fractionelements = s.split("/");
 
+        if (fractionelements.length == 1 && s.matches("[^0-9]")) {
+            String x = s;
+            return new Lfraction(parseLong(x), 1);
+        }
+
+        String m = s.substring(0, s.indexOf("/"));
+        String n = s.substring(s.indexOf("/")+1);
+
         if (fractionelements.length != 2) {
             throw new RuntimeException(String.format("Please follow the format numerator/denominator, current string '%s' translates to invalid fraction.", s));
         }
 
-        if (fractionelements[0].matches("[^0-9]") && (fractionelements[1].matches("[^0-9]"))) {
-            throw new RuntimeException(String.format("Numerator '%s' and denominator '%s' as part of string '%s' are not in valid number format.", fractionelements[0], fractionelements[1], s));
-        } else if (fractionelements[0].matches("[^0-9]")) {
-            throw new RuntimeException(String.format("Numerator '%s' as part of string '%s' is not in valid number format.", fractionelements[0], s));
-        } else if (fractionelements[1].matches("[^0-9]")) {
-            throw new RuntimeException(String.format("Denominator '%s' as part of string '%s' is not in valid number format.", fractionelements[1], s));
+        if (m.matches("[^0-9]") && (n.matches("[^0-9]"))) {
+            throw new RuntimeException(String.format("Numerator '%s' and denominator '%s' as part of string '%s' are not in valid number format.", m, n, s));
+        } else if (m.matches("[^0-9]")) {
+            throw new RuntimeException(String.format("Numerator '%s' as part of string '%s' is not in valid number format.", m, s));
+        } else if (n.matches("[^0-9]")) {
+            throw new RuntimeException(String.format("Denominator '%s' as part of string '%s' is not in valid number format.", n, s));
         }
 
-        return new Lfraction(Long.parseLong(fractionelements[0]), Long.parseLong(fractionelements[1]));
+        return new Lfraction(parseLong(m), parseLong(n));
 
     }
 }
