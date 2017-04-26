@@ -101,6 +101,7 @@ public class GraphTask {
       private int info = 0;
       private int[][] graphconnection;
       private int vertexcount = 0;
+       private int edge_count = 0;
       private Vertex[] vertarray;
       // You can add more fields, if needed
 
@@ -236,12 +237,13 @@ public class GraphTask {
          vertarray = vert;
          int[][] connected = createAdjMatrix();
          int edgeCount = m - n + 1;  // remaining edges
+          edge_count = edgeCount;
          while (edgeCount > 0) {
             int i = (int)(Math.random()*n);  // random source
             int j = (int)(Math.random()*n);  // random target
             if (i==j) 
                continue;  // no loops
-            if (connected [i][j] != 0 || connected [j][i] != 0) 
+            if (connected [i][j] != 0 || connected [j][i] != 0)
                continue;  // no multiple edges
             Vertex vi = vert [i];
             Vertex vj = vert [j];
@@ -253,8 +255,8 @@ public class GraphTask {
          }
           graphconnection = connected;
 
-         int i;
-         int j;
+//         int i;
+//         int j;
 //         for(i=0; i<n; i++) {
 //            for (j = 0; j < n; j++) {
 //               if (i == j || j == i)
@@ -299,29 +301,30 @@ public class GraphTask {
             int[][] conn = graphconnection;
             int count = vertexcount;
             Vertex[] vert = vertarray;
+//            int edc = edge_count;
             int i;
             int j;
             for(i=0; i<count; i++) {
                 for(j=0; j<count;j++){
                     if (i==j)
                         continue;
-                    if (conn [i][j] != 0 || conn [j][i] != 0)
-                        continue;
-                   if (conn [i][j] == 1 || conn [i][j] == 1) {
+                   if (conn [i][j] == 1 || conn [j][i] == 1) {
                        Vertex vi = vert[i];
-                       Vertex vj = vert[j];
-                       String t = "a" + vi.toString() + "_" + vj.toString();
-                       deleteArc(t,vi,vj);
+                       vi.first.target = null;
+                       vi.first = vi.first.next;
                        conn [i][j]=0;
-                       String d = "a" + vj.toString() + "_" + vi.toString();
-                       deleteArc(d,vj,vi);
                        conn [j][i]=0;
-                   } else if (conn [i][j] == 0 || conn [i][j] == 0) {
+                   } else if (conn [i][j] == 0 || conn [j][i] == 0) {
                        Vertex vi = vert [i];
                        Vertex vj = vert [j];
-                       createArc ("a" + vi.toString() + "_" + vj.toString(), vi, vj);
+                       Arc e1 = createArc ("a" + vi.toString() + "_" + vj.toString(), vi, vj);
+                       vi.first = e1;
+//                       vi.first.next = ???;
+                       vi.first.target = vj;
                        conn [i][j] = 1;
-                       createArc ("a" + vj.toString() + "_" + vi.toString(), vj, vi);
+                       Arc e2 = createArc ("a" + vj.toString() + "_" + vi.toString(), vj, vi);
+                       vj.first = e2;
+                       vj.first.target = vi;
                        conn [j][i] = 1;
                    }
                 }
