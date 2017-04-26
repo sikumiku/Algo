@@ -33,11 +33,15 @@ public class GraphTask {
         g.createComplementaryGraphforSimpleGraph();
         System.out.println(g);
 
-        testComplementEdgeCountwithCorrectCount();
+        testComplementEdgeCountwithCorrectCount(8, 10);
 
 //        testComplementEdgeCountwithIncorrectCount();
 
-        testElementinComplementGraph();
+        testRandomElementinComplementGraph(6, 9);
+
+        testIfEdgesDifferinSimpleandComplementGraph();
+
+        testWith5000VertixesandEdges();
 
     }
 
@@ -306,17 +310,23 @@ public class GraphTask {
 
     }
 
-    public void testComplementEdgeCountwithCorrectCount() {
+    public void testComplementEdgeCountwithCorrectCount(int n, int m) {
         Graph g1 = new Graph("G1");
+        if (n <= 0)
+            throw new IllegalArgumentException("No vertices.");
+        if (n > 2500)
+            throw new IllegalArgumentException("Too many vertices: " + n);
+        if (m < n - 1 || m > n * (n - 1) / 2)
+            throw new IllegalArgumentException
+                    ("Impossible number of edges: " + m);
 
-
-        g1.createRandomSimpleGraph(5,4);
+        g1.createRandomSimpleGraph(n,m);
         int[][] conn1 = g1.graphconnection;
         int count1 = 0;
         int i;
         int j;
-        for (i = 0; i < 5; i++) {
-            for (j = 0; j < 5; j++) {
+        for (i = 0; i < n; i++) {
+            for (j = 0; j < n; j++) {
                 if (i == j)
                     continue;
                 if (conn1[i][j] == 1 || conn1[j][i] == 1) {
@@ -326,8 +336,8 @@ public class GraphTask {
         }
         g1.createComplementaryGraphforSimpleGraph();
         int count2 = 0;
-        for (i = 0; i < 5; i++) {
-            for (j = 0; j < 5; j++) {
+        for (i = 0; i < n; i++) {
+            for (j = 0; j < n; j++) {
                 if (i == j)
                     continue;
                 if (conn1[i][j] == 1 || conn1[j][i] == 1) {
@@ -337,24 +347,31 @@ public class GraphTask {
             }
         }
         int result = count2+count1;
-        if (result == 4*5) {
+        int edgecount = n*(n-1);
+        if (result == edgecount) {
             System.out.println("Lihtgraafi ja t2iendgraafi servade summa v6rdub maksimaalse servade arvuga.");
         } else {
             throw new RuntimeException("Lihtgraafi ja t2iendgraafi servade summa peab v6rduma maksimaalse servade arvuga!");
         }
     }
 
-    public void testComplementEdgeCountwithIncorrectCount() {
+    public void testComplementEdgeCountwithIncorrectCount(int n, int m) {
         Graph g2 = new Graph("G2");
+        if (n <= 0)
+            throw new IllegalArgumentException("No vertices.");
+        if (n > 2500)
+            throw new IllegalArgumentException("Too many vertices: " + n);
+        if (m < n - 1 || m > n * (n - 1) / 2)
+            throw new IllegalArgumentException
+                    ("Impossible number of edges: " + m);
 
-
-        g2.createRandomSimpleGraph(5,4);
+        g2.createRandomSimpleGraph(n,m);
         int[][] conn1 = g2.graphconnection;
         int count1 = 0;
         int i;
         int j;
-        for (i = 0; i < 5; i++) {
-            for (j = 0; j < 5; j++) {
+        for (i = 0; i < n; i++) {
+            for (j = 0; j < n; j++) {
                 if (i == j)
                     continue;
                 if (conn1[i][j] == 1 || conn1[j][i] == 1) {
@@ -365,8 +382,8 @@ public class GraphTask {
         g2.createComplementaryGraphforSimpleGraph();
         Vertex[] vert = g2.vertarray;
         int count2 = 0;
-        for (i = 0; i < 5; i++) {
-            for (j = 0; j < 5; j++) {
+        for (i = 0; i < n; i++) {
+            for (j = 0; j < n; j++) {
                 if (i == j)
                     continue;
                 if (conn1[i][j] == 1 || conn1[j][i] == 1) {
@@ -383,20 +400,21 @@ public class GraphTask {
             }
         }
         int result = count2+count1;
-        if (result == 4*5) {
+        int edgecount = n*(n-1);
+        if (result == edgecount) {
             System.out.println("Lihtgraafi ja t2iendgraafi servade summa v6rdub maksimaalse servade arvuga.");
         } else {
             throw new RuntimeException("Lihtgraafi ja t2iendgraafi servade summa peab v6rduma maksimaalse servade arvuga!");
         }
     }
 
-    public void testElementinComplementGraph() {
+    public void testRandomElementinComplementGraph(int n, int m) {
         Graph g3 = new Graph("G3");
 
-        g3.createRandomSimpleGraph(3,2);
+        g3.createRandomSimpleGraph(n,m);
         Vertex[] vert = g3.vertarray;
-
-        Vertex vi = vert[2];
+        int i = (int) (Math.random() * n);
+        Vertex vi = vert[i];
         Arc e1 = vi.first;
 
         g3.createComplementaryGraphforSimpleGraph();
@@ -411,13 +429,105 @@ public class GraphTask {
 
     }
 
-    public void testIfElementsHaveSwappedPlaces() {
+    public void testIfEdgesDifferinSimpleandComplementGraph() {
         Graph g4 = new Graph("G4");
-
+        Arc e1 = null;
+        Arc e2 = null;
+        Arc e3 = null;
+        Arc e4 = null;
+        Arc e5 = null;
+        Arc e6 = null;
+        Arc e7 = null;
+        Arc e8 = null;
+        Arc e9 = null;
+        Arc e10 = null;
+        Arc e11 = null;
+        Arc e12 = null;
         g4.createRandomSimpleGraph(3,2);
+        System.out.println(g4);
+        Vertex[] vert = g4.vertarray;
+        Vertex vi = vert[0];
+        if (vi.first != null) {
+            e1 = vi.first;
+            if (vi.first.next != null) {
+                e2 = vi.first.next;
+            }
+        }
+        Vertex vj = vert[1];
+        if(vj.first != null) {
+            e3 = vi.first;
+            if (vj.first.next != null) {
+                e4 = vj.first.next;
+            }
+        }
 
+        Vertex vk = vert[2];
+        if(vk.first != null) {
+            e5 = vi.first;
+            if (vk.first.next != null) {
+                e6 = vk.first.next;
+            }
+        }
 
+        g4.createComplementaryGraphforSimpleGraph();
+        System.out.println(g4);
+        if (vi.first != null) {
+            e7 = vi.first;
+            if (vi.first.next != null) {
+                e8 = vi.first.next;
+            }
+        }
 
+        if(vj.first != null) {
+            e9 = vi.first;
+            if (vj.first.next != null) {
+                e10 = vj.first.next;
+            }
+        }
+
+        if(vk.first != null) {
+            e11 = vi.first;
+            if (vk.first.next != null) {
+                e12 = vk.first.next;
+            }
+        }
+
+        if (e1 != null && e2 != null) {
+            if (e1 != e7 && e2 != e8) {
+                System.out.println("Esimese tipu sillad lihtgraafis erinevad m6lemast t2iendgraafi esimese tipu sildadest.");
+            }
+        } else if (e1 != e7) {
+            System.out.println("Esimese tipu sild lihtgraafis erineb esimese tipu sillast t2iendgraafis.");
+        }
+
+        if (e3 != null && e4 != null) {
+            if (e3 != e9 && e4 != e10) {
+                System.out.println("Teise tipu sillad lihtgraafis erinevad m6lemast t2iendgraafi teise tipu sildadest.");
+            }
+        } else if (e3 != e9) {
+            System.out.println("Teise tipu sild lihtgraafis erineb teise tipu sillast t2iendgraafis.");
+        }
+
+        if (e5 != null && e6 != null) {
+            if (e5 != e11 && e6 != e12) {
+                System.out.println("Kolmanda tipu sillad lihtgraafis erinevad m6lemast t2iendgraafi kolmanda tipu sildadest.");
+            }
+        } else if (e5 != e11) {
+            System.out.println("Kolmamnda tipu sild lihtgraafis erineb kolmanda tipu sillast t2iendgraafis.");
+        }
+
+    }
+
+    public void testWith5000VertixesandEdges() {
+        Graph g3 = new Graph("G3");
+
+        g3.createRandomSimpleGraph(5000,5000);
+
+        long t0 = System.currentTimeMillis();
+        g3.createComplementaryGraphforSimpleGraph();
+        long t1 = System.currentTimeMillis();
+        int delta = (int)(t1-t0);
+        System.out.println ("Creating complementary Graph took: " + delta + " ms");
     }
 }
 
