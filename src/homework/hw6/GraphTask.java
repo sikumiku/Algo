@@ -34,7 +34,7 @@ public class GraphTask {
             throw new RuntimeException("Sisestus peab olema arv.");
         }
         int sisestus1 = kasutaja.nextInt();
-        System.out.println("Sisesta servade suurus");
+        System.out.println("Sisesta servade summa");
         if (kasutaja.hasNextInt()) {
         } else {
             throw new RuntimeException("Sisestus peab olema arv.");
@@ -47,7 +47,13 @@ public class GraphTask {
         g.createComplementGraphforSimpleGraph();
         System.out.println(g);
 
-        //5 different tests
+        Graph g2 = new Graph("G");
+        g2.createRandomSimpleGraph(6, 9);
+        System.out.println(g2);
+        g2.createComplementGraphforSimpleGraph();
+        System.out.println(g2);
+
+        //6 different tests
         testComplementEdgeCountwithCorrectCount(8, 10);
 
         compareRandomFirstEdgeinComplementGraph(6, 9);
@@ -541,26 +547,32 @@ public class GraphTask {
 
         if (e1 != null && e2 != null) {
             if (e1 != e7 && e2 != e8) {
-                System.out.println("Esimese tipu sillad lihtgraafis erinevad mõlemast täiendgraafi esimese tipu sildadest.");
+                System.out.println("Esimese tipu servad lihtgraafis erinevad mõlemast täiendgraafi esimese tipu servadest.");
             }
         } else if (e1 != e7 || e2 != e8) {
-            System.out.println("Esimese tipu sild lihtgraafis erineb esimese tipu sillast täiendgraafis.");
+            System.out.println("Esimese tipu serv lihtgraafis erineb esimese tipu servast täiendgraafis.");
+        } else {
+            throw new RuntimeException("Esimese tipu servad lihtgraafis ei tohi olla samad, mis täiendgraafis!");
         }
 
         if (e3 != null && e4 != null) {
             if (e3 != e9 && e4 != e10) {
-                System.out.println("Teise tipu sillad lihtgraafis erinevad mõlemast täiendgraafi teise tipu sildadest.");
+                System.out.println("Teise tipu servad lihtgraafis erinevad mõlemast täiendgraafi teise tipu servadest.");
             }
         } else if (e3 != e9 || e4 != e10) {
-            System.out.println("Teise tipu sild lihtgraafis erineb teise tipu sillast täiendgraafis.");
+            System.out.println("Teise tipu serv lihtgraafis erineb teise tipu servast täiendgraafis.");
+        } else {
+            throw new RuntimeException("Teise tipu servad lihtgraafis ei tohi olla samad, mis täiendgraafis!");
         }
 
         if (e5 != null && e6 != null) {
             if (e5 != e11 && e6 != e12) {
-                System.out.println("Kolmanda tipu sillad lihtgraafis erinevad mõlemast täiendgraafi kolmanda tipu sildadest.");
+                System.out.println("Kolmanda tipu servad lihtgraafis erinevad mõlemast täiendgraafi kolmanda tipu servadest.");
             }
         } else if (e5 != e11 || e6 != e12) {
-            System.out.println("Kolmamnda tipu sild lihtgraafis erineb kolmanda tipu sillast täiendgraafis.");
+            System.out.println("Kolmamnda tipu serv lihtgraafis erineb kolmanda tipu servast täiendgraafis.");
+        } else {
+            throw new RuntimeException("Kolmanda tipu servad lihtgraafis ei tohi olla samad, mis täiendgraafis!");
         }
 
     }
@@ -572,7 +584,6 @@ public class GraphTask {
      */
     public void testWithMaximumVertixesandEdges() {
         Graph g5 = new Graph("G3");
-
         g5.createRandomSimpleGraph(2500, 3123750);
 
         long t0 = System.currentTimeMillis();
@@ -604,7 +615,6 @@ public class GraphTask {
         } else {
             throw new RuntimeException("Nulli sillaga ühetipulise lihtgraafi täiendgraaf ei tohi omada silda.");
         }
-
     }
 }
 
