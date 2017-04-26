@@ -21,23 +21,24 @@ public class GraphTask {
      * Actual main method to run examples and everything.
      */
     public void run() {
+        Scanner kasutaja = new Scanner(System.in);
+        System.out.println("Sisesta vertexite suurus");
+        int sisestus1 = kasutaja.nextInt();
+        System.out.println("Sisesta servade suurus");
+        int sisestus2 = kasutaja.nextInt();
+
         Graph g = new Graph("G");
-        g.createRandomSimpleGraph(6, 9);
+        g.createRandomSimpleGraph(sisestus1, sisestus2);
         System.out.println(g);
         g.createComplementaryGraphforSimpleGraph();
         System.out.println(g);
 
+        testComplementEdgeCountwithCorrectCount();
 
-        Vertex v = g.createVertex("v6");
-        Vertex v2 = g.createVertex("v1");
-        System.out.println(v);
-        Vertex a = v.next;
-        System.out.println(a);
+//        testComplementEdgeCountwithIncorrectCount();
 
-        Arc arc = g.createArc("a6", v, v2);
-        System.out.println(arc);
-        Vertex b = arc.target;
-        System.out.println(b);
+        testElementinComplementGraph();
+
     }
 
     // TODO!!! add javadoc relevant to your problem
@@ -260,6 +261,7 @@ public class GraphTask {
         }
 
         public void createComplementaryGraphforSimpleGraph() {
+            this.id = "Ĝ";
             int[][] conn = graphconnection;
             int count = vertexcount;
             Vertex[] vert = vertarray;
@@ -301,6 +303,120 @@ public class GraphTask {
             }
 
         }
+
+    }
+
+    public void testComplementEdgeCountwithCorrectCount() {
+        Graph g1 = new Graph("G1");
+
+
+        g1.createRandomSimpleGraph(5,4);
+        int[][] conn1 = g1.graphconnection;
+        int count1 = 0;
+        int i;
+        int j;
+        for (i = 0; i < 5; i++) {
+            for (j = 0; j < 5; j++) {
+                if (i == j)
+                    continue;
+                if (conn1[i][j] == 1 || conn1[j][i] == 1) {
+                    count1++;
+                }
+            }
+        }
+        g1.createComplementaryGraphforSimpleGraph();
+        int count2 = 0;
+        for (i = 0; i < 5; i++) {
+            for (j = 0; j < 5; j++) {
+                if (i == j)
+                    continue;
+                if (conn1[i][j] == 1 || conn1[j][i] == 1) {
+
+                    count2++;
+                }
+            }
+        }
+        int result = count2+count1;
+        if (result == 4*5) {
+            System.out.println("Lihtgraafi ja t2iendgraafi servade summa v6rdub maksimaalse servade arvuga.");
+        } else {
+            throw new RuntimeException("Lihtgraafi ja t2iendgraafi servade summa peab v6rduma maksimaalse servade arvuga!");
+        }
+    }
+
+    public void testComplementEdgeCountwithIncorrectCount() {
+        Graph g2 = new Graph("G2");
+
+
+        g2.createRandomSimpleGraph(5,4);
+        int[][] conn1 = g2.graphconnection;
+        int count1 = 0;
+        int i;
+        int j;
+        for (i = 0; i < 5; i++) {
+            for (j = 0; j < 5; j++) {
+                if (i == j)
+                    continue;
+                if (conn1[i][j] == 1 || conn1[j][i] == 1) {
+                    count1++;
+                }
+            }
+        }
+        g2.createComplementaryGraphforSimpleGraph();
+        Vertex[] vert = g2.vertarray;
+        int count2 = 0;
+        for (i = 0; i < 5; i++) {
+            for (j = 0; j < 5; j++) {
+                if (i == j)
+                    continue;
+                if (conn1[i][j] == 1 || conn1[j][i] == 1) {
+                    Vertex vi = vert[i];
+                    Vertex vj = vert[j];
+                    vi.first.target = null;
+                    vi.first = vi.first.next;
+                    vj.first.target = null;
+                    vj.first = vj.first.next;
+                    conn1[i][j] = 2;
+                    conn1[j][i] = 2;
+                    count2++;
+                }
+            }
+        }
+        int result = count2+count1;
+        if (result == 4*5) {
+            System.out.println("Lihtgraafi ja t2iendgraafi servade summa v6rdub maksimaalse servade arvuga.");
+        } else {
+            throw new RuntimeException("Lihtgraafi ja t2iendgraafi servade summa peab v6rduma maksimaalse servade arvuga!");
+        }
+    }
+
+    public void testElementinComplementGraph() {
+        Graph g3 = new Graph("G3");
+
+        g3.createRandomSimpleGraph(3,2);
+        Vertex[] vert = g3.vertarray;
+
+        Vertex vi = vert[2];
+        Arc e1 = vi.first;
+
+        g3.createComplementaryGraphforSimpleGraph();
+
+        Arc e2 = vi.first;
+
+        if (e1 != e2) {
+            System.out.println("Element t2iendgraafis erineb samal kohal asuvas elemendist algses lihtgraafis.");
+        } else {
+            throw new RuntimeException("Elemendid samal kohal t2iendgraafis ja lihtgraafis ei tohi olla samad!");
+        }
+
+    }
+
+    public void testIfElementsHaveSwappedPlaces() {
+        Graph g4 = new Graph("G4");
+
+        g4.createRandomSimpleGraph(3,2);
+
+
 
     }
 }
