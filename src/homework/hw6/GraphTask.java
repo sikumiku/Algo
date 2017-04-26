@@ -1,4 +1,5 @@
 package homework.hw6;
+import java.lang.reflect.Array;
 import java.util.*;
 
 /** Container class to different classes, that makes the whole
@@ -16,7 +17,10 @@ public class GraphTask {
    public void run() {
       Graph g = new Graph ("G");
       g.createRandomSimpleGraph (6, 9);
-      System.out.println (g);
+       System.out.println(g);
+      g.createComplementaryGraphforSimpleGraph();
+       System.out.println(g);
+
 
 
       Vertex v = g.createVertex("v6");
@@ -38,6 +42,7 @@ public class GraphTask {
       private Vertex next;
       private Arc first;
       private int info = 0;
+
       // You can add more fields, if needed
 
       Vertex (String s, Vertex v, Arc e) {
@@ -94,6 +99,9 @@ public class GraphTask {
       private String id;
       private Vertex first;
       private int info = 0;
+      private int[][] graphconnection;
+      private int vertexcount = 0;
+      private Vertex[] vertarray;
       // You can add more fields, if needed
 
       Graph (String s, Vertex v) {
@@ -195,6 +203,12 @@ public class GraphTask {
          return res;
       }
 
+      public Arc deleteArc (String aid, Vertex from, Vertex to){
+         Arc res = new Arc (aid);
+         res = null;
+         return res;
+      }
+
       /**
        * Create a connected simple (undirected, no loops, no multiple
        * arcs) random graph with n vertices and m edges.
@@ -203,7 +217,7 @@ public class GraphTask {
        */
       public void createRandomSimpleGraph (int n, int m) {
          if (n <= 0)
-            return;
+            throw new IllegalArgumentException ("No vertices.");
          if (n > 2500)
             throw new IllegalArgumentException ("Too many vertices: " + n);
          if (m < n-1 || m > n*(n-1)/2)
@@ -216,8 +230,10 @@ public class GraphTask {
          int c = 0;
          while (v != null) {
             vert[c++] = v;
+            vertexcount++;
             v = v.next;
          }
+         vertarray = vert;
          int[][] connected = createAdjMatrix();
          int edgeCount = m - n + 1;  // remaining edges
          while (edgeCount > 0) {
@@ -235,12 +251,84 @@ public class GraphTask {
             connected [j][i] = 1;
             edgeCount--;  // a new edge happily created
          }
-      }
+          graphconnection = connected;
 
-      public void createComplementaryGraphforSimpleGraph (Graph g) {
-         return;
+         int i;
+         int j;
+//         for(i=0; i<n; i++) {
+//            for (j = 0; j < n; j++) {
+//               if (i == j || j == i)
+//                  continue;
+//               if (connected[i][j] != 0 || connected[j][i] != 0)
+//                  continue;
+//               if (connected[i][j] == 0 || connected[j][i] == 0) {
+//                  Vertex vi = vert[i];
+//                  Vertex vj = vert[j];
+//                  createArc("a" + vi.toString() + "_" + vj.toString(), vi, vj);
+//                  connected[i][j] = 2;
+//                  createArc("a" + vj.toString() + "_" + vi.toString(), vj, vi);
+//                  connected[i][j] = 2;
+//               }
+//            }
+//         }
+
+
+//         for(i=0; i<n; i++) {
+//            for(j=0; j<n;j++){
+//               if (i==j || j==i)
+//                  continue;  // no loops
+//               if (connected [i][j] != 1 || connected [j][i] != 1)
+//                  continue;  // no multiple edges
+//               if (connected [i][j] == 1 || connected [i][j] == 1) {
+//                  Vertex vi = vert[i];
+//                  Vertex vj = vert[j];
+//                  String t = "a" + vi.toString() + "_" + vj.toString();
+//                  deleteArc(t,vi,vj);
+//                  connected [i][j]=0;
+//                  String d = "a" + vj.toString() + "_" + vi.toString();
+//                  deleteArc(d,vj,vi);
+//                  connected [j][i]=0;
+//               }
+//            }
+//         }
+//         System.out.println(this);
+
+
       }
+       public void createComplementaryGraphforSimpleGraph() {
+            int[][] conn = graphconnection;
+            int count = vertexcount;
+            Vertex[] vert = vertarray;
+            int i;
+            int j;
+            for(i=0; i<count; i++) {
+                for(j=0; j<count;j++){
+                    if (i==j)
+                        continue;
+                    if (conn [i][j] != 0 || conn [j][i] != 0)
+                        continue;
+                   if (conn [i][j] == 1 || conn [i][j] == 1) {
+                       Vertex vi = vert[i];
+                       Vertex vj = vert[j];
+                       String t = "a" + vi.toString() + "_" + vj.toString();
+                       deleteArc(t,vi,vj);
+                       conn [i][j]=0;
+                       String d = "a" + vj.toString() + "_" + vi.toString();
+                       deleteArc(d,vj,vi);
+                       conn [j][i]=0;
+                   } else if (conn [i][j] == 0 || conn [i][j] == 0) {
+                       Vertex vi = vert [i];
+                       Vertex vj = vert [j];
+                       createArc ("a" + vi.toString() + "_" + vj.toString(), vi, vj);
+                       conn [i][j] = 1;
+                       createArc ("a" + vj.toString() + "_" + vi.toString(), vj, vi);
+                       conn [j][i] = 1;
+                   }
+                }
+            }
+
+       }
+
    }
-
-} 
+}
 
