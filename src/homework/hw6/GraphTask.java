@@ -26,7 +26,9 @@ public class GraphTask {
      * Actual main method to run examples and everything.
      */
     public void run() {
-        System.out.println("Programm loob esimesena kasutaja määratud tippude ja sildadega graafi ja seejärel jooksutab erinevaid teste.");
+        System.out.println("Programm loob esimesena kasutaja määratud tippude ja servadega lihtgraafi, siis loob sellele vastava täiendgraafi ning jooksutab erinevaid teste.");
+        System.out.println("Suvalise lihtgraafi kasutamiseks tuleb anda meetodile createRandomSimpleGraph() ette tippude ja servade arv.");
+        System.out.println("Täiendgraafi kasutamiseks tuleb anda meetodile createComplementGraphforSimpleGraph() ette Graph andmetüüpi lihtgraaf.");
         Scanner kasutaja = new Scanner(System.in);
         System.out.println("Sisesta tippude summa");
         if (kasutaja.hasNextInt()) {
@@ -43,7 +45,6 @@ public class GraphTask {
 
         Graph g = new Graph("G");
         g.createRandomSimpleGraph(sisestus1, sisestus2);
-
         System.out.println(g);
         Graph g11 = new Graph("G11");
         g11.createComplementGraphforSimpleGraph(g);
@@ -67,7 +68,7 @@ public class GraphTask {
 
         testWithMaximumVerticesandEdges();
 
-        testComplementEdgeCountwithIncorrectCount(6, 9);
+//        testComplementEdgeCountwithIncorrectCount(6, 9);
     }
 
     /**
