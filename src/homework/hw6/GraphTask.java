@@ -4,7 +4,7 @@ import java.util.*;
 
 /**
  * Container class to different classes, that makes the whole
- * set of classes one class formally.
+ * numberhashset of classes one class formally.
  * Kasutatud materjal:
  * https://www.quora.com/How-do-I-calculate-the-number-of-edges-in-a-complete-graph
  * http://www.math.ucsd.edu/~fan/graphdraw/llu/graphproduct/Graph.java
